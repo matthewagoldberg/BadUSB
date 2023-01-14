@@ -54,7 +54,7 @@ foreach ($adapter in $ipConfig.IPv4Address) {
 }
 
     # Get the current date and time
-    $timestamp = Get-Date -Format "MM/dd/yyyy HH:mm:ss"
+    $timestamp = Get-Date -Format "MM/dd/yyyy h:mm:ss tt"
 
     # Add the timestamp field to the embed
     $fields += @{ name = "Timestamp"; value = $timestamp }
