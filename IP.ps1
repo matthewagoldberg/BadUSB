@@ -34,7 +34,7 @@ if ($secondaryDNS -match '^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$') {
 
 # Add the public IP and DNS information to the fields array
 
-$fields += @{ name = "Public IP Info"; value =  "IP:" + '```' + $publicIP + '```' + "Proxied:" + '```' + $proxy + '```' + "Type:" + '```' + $type + '`' }
+$fields += @{ name = "Public IP Info"; value =  "IP:" + '```' + $publicIP + '```' + "Proxied:" + '```' + $proxy + '```' + "Type:" + '```' + $type + '```' }
 $fields += @{ name = "DNS Servers"; value = "*Primary DNS:*" + '```' + $primaryDNS + '```' + "*Secondary DNS:*" + '```' + $secondaryDNS + '```' }
 
 # Iterate through the adapters
