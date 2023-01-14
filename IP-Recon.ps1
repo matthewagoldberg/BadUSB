@@ -49,7 +49,7 @@ foreach ($adapter in $ipConfig.IPv4Address) {
     $macAddress = (Get-NetAdapter -Name $adapterName).MacAddress
 
     # Add the adapter information to the fields array
-    $adapterValue = "*Local IP:*`n" + '`' + $localIP + '`' + "`n*MAC Address:*`n" + '`' + $macAddress + '`'
+    $adapterValue = "*Local IP:*" + '```' + $localIP + '```' + "*MAC Address:*" + '```' + $macAddress + '```'
     $fields += @{ name = "***$adapterName***"; value = $adapterValue}
 }
 
